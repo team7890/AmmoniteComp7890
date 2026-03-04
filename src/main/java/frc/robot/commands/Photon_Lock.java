@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -22,7 +23,6 @@ public class Photon_Lock extends Command {
   private final CommandSwerveDrivetrain objSwerve;
   private final double dMaxSpeed;
   private final double dMaxAngularRate;
- 
   private final DoubleSupplier dsDriverLeftX;
   private final DoubleSupplier dsDriverLeftY;
  
@@ -70,14 +70,14 @@ public class Photon_Lock extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    
     dCmdLeftX = dsDriverLeftX.getAsDouble();
     dCmdLeftY = dsDriverLeftY.getAsDouble();
 
     SmartDashboard.putNumber("Photon Aim", photonAimProportional());
 
     objSwerve.setControl(
-      drive.withVelocityX(dCmdLeftY).withVelocityX(dCmdLeftX).withRotationalRate(photonAimProportional())
+      drive.withVelocityX(dCmdLeftX).withVelocityX(dCmdLeftY).withRotationalRate(photonAimProportional())
     );
   }
 
