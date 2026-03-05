@@ -28,7 +28,7 @@ import frc.robot.commands.ShooterFull;
 import frc.robot.generated.TunerConstants;
 // import frc.robot.generated.TunerConstants_comp;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Hopper.Extender;
+import frc.robot.subsystems.Hopper.Pivot;
 import frc.robot.subsystems.Hopper.Indexer;
 import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.Feeder;
@@ -64,7 +64,7 @@ public class RobotContainer {
     private final Feeder objFeeder = new Feeder();
     private final Indexer objIndexer = new Indexer();
     private final Intake objIntake = new Intake();
-    private final Extender objExtender = new Extender();
+    private final Pivot objIntakePivot = new Pivot();
 
     // === PathPlanner === \\
     private final SendableChooser<Command> autoChooser;
@@ -75,7 +75,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Chooser", autoChooser);
         configureBindings();
 
-        NamedCommands.registerCommand("run Shooter", new RunCommand(() -> objShooter.runShooterRPM(MotorSpeeds.dShooterRPM)));
+        // NamedCommands.registerCommand("run Shooter", new RunCommand(() -> objShooter.runShooterRPM(MotorSpeeds.dShooterRPM)));
     }
 
     private void configureBindings() {
@@ -104,8 +104,8 @@ public class RobotContainer {
             new RunCommand(()->objShooter.runShooter(0.15), objShooter)
         );
 
-        objExtender.setDefaultCommand(
-            new RunCommand(() -> objExtender.stopExtender(), objExtender)
+        objIntakePivot.setDefaultCommand(
+            new RunCommand(() -> objIntakePivot.stopTilter(), objIntakePivot)
         );
 
         objIntake.setDefaultCommand(
@@ -131,76 +131,31 @@ public class RobotContainer {
         // xboxDriver.start().and(xboxDriver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         // xboxDriver.start().and(xboxDriver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        // Reset the field-centric heading on leftbumper press.
-        xboxDriver.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        // Reset the field-centric heading on 3-line button press.
+        xboxDriver.button(8).onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
+        // === OFFICIAL CONTROLS === \\
 
-        xboxDriver.rightBumper().whileTrue(new Photon_Lock(drivetrain, MaxSpeed, MaxAngularRate, 
-                () -> xboxOperator.getLeftX(), 
-                () -> xboxOperator.getLeftY()));
+        xboxDriver.x().whileTrue(drivetrain.applyRequest(() -> brake)); // === Wheels X for no moving=== \\
         
-
-
-    //    xboxOperator.a().whileTrue(new RunCommand(() -> objShooter.runShooter(MotorSpeeds.dShooterSpeed), objShooter))
-    //                    .whileFalse(new RunCommand(() -> objShooter.stopShooter(), objShooter));
-        
-    //     xboxOperator.b().whileTrue(new RunCommand(() -> objFeeder.runFeeder(MotorSpeeds.dFeederSpeed), objFeeder))
-    //                    .whileFalse(new RunCommand(() -> objFeeder.stopFeeder(), objFeeder));
-
-    //    xboxOperator.y().whileTrue(new RunCommand(()-> objIndexer. runIndexer(MotorSpeeds.dIndexerSpeed), objIndexer))
-    //                     .whileFalse(new RunCommand(()-> objIndexer.stopIndexer(), objIndexer));
-
-
-
-        // xboxDriver.a ().whileTrue(new RunCommand(() -> objShooter.runShooter(MotorSpeeds.dShooterSpeed), objShooter));
-                    //    .whileFalse(new RunCommand(() -> objShooter.setDefaultCommand(0.15), objShooter) );
-        
-        xboxDriver.axisGreaterThan(2, 0.5).whileTrue(new ShooterFull(objShooter, objFeeder, objIndexer,objIntake));
+        xboxDriver.axisGreaterThan(3, 0.5).whileTrue(new ShooterFull(objShooter, objFeeder, objIndexer,objIntake));
 
         xboxDriver.rightBumper().whileTrue(new Photon_Lock(drivetrain, MaxSpeed, MaxAngularRate,
             () -> xboxDriver.getLeftX(), 
             () -> xboxDriver.getLeftY()));
 
-        // xboxDriver.rightTrigger().whileTrue(new FireNTheHole(objFeeder, objIndexer, objIntake));
+        xboxDriver.axisGreaterThan(2, 0.1).whileTrue(new RunCommand(()-> objIntake.runIntake(MotorSpeeds.dIntakeSpeed),objIntake));
 
-        // xboxDriver.x () .whileTrue(new RunCommand(()-> objIndexer.runIndexer(MotorSpeeds.dIndexerSpeed), objIndexer));
-                             
-        xboxDriver.leftBumper() . whileTrue(new RunCommand(()-> objIntake.runIntake(MotorSpeeds.dIntakeSpeed),objIntake));
-                                // .whileFalse(new RunCommand(()-> objIntake. stopIntake(), objIntake));
-            
-            // === SHOOTER TESTING === \\
-        // xboxDriver.a().whileTrue(new ManualFire(objFeeder, objShooter, MotorSpeeds.dShooterRPM, MotorSpeeds.dFeederSpeed));
-        // xboxDriver.x().whileTrue(new ManualFire(objFeeder, objShooter, 2000, 0.5));
-        // xboxDriver.y().whileTrue(new ManualFire(objFeeder, objShooter, 3000, MotorSpeeds.dFeederSpeed));
-        xboxDriver.a().whileTrue(new RunCommand(() -> objIndexer.runIndexer(0.5), objIndexer));
-
-        xboxDriver.b().whileTrue(new RunCommand(() -> objExtender.runExtender(0.1), objExtender));
+        xboxDriver.b().whileTrue(new RunCommand(() -> objIntakePivot.runTilter(MotorSpeeds.dPivotSpeed), objIntakePivot));
 
         xboxOperator.axisGreaterThan(2, 0.5).whileTrue(new ShooterFull(objShooter, objFeeder, objIndexer, objIntake));
 
-        
+        xboxDriver.a().whileTrue(new RunCommand(() -> objShooter.runShooterRPM(MotorSpeeds.dShooterRPM), objShooter));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {
-        // Simple drive forward auton
-        // final var idle = new SwerveRequest.Idle();
-        // return Commands.sequence(
-        //     // Reset our field centric heading to match the robot
-        //     // facing away from our alliance station wall (0 deg).
-        //     drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
-        //     // Then slowly drive forward (away from us) for 5 seconds.
-        //     drivetrain.applyRequest(() ->
-        //         drive.withVelocityX(0.5)
-        //             .withVelocityY(0)
-        //             .withRotationalRate(0)
-        //     )
-        //     .withTimeout(5.0),
-        //     // Finally idle for the rest of auton
-        //     drivetrain.applyRequest(() -> idle)
-        // );
-
         return autoChooser.getSelected();
     }
 }
