@@ -5,24 +5,30 @@
 package frc.robot.subsystems.Hopper;
 
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorIDs;
+import frc.robot.Constants.MotorPositions;
+import frc.robot.Constants.MotorSpeeds;
 
-public class Intake extends SubsystemBase {
+public class Pivot extends SubsystemBase {
 
-  private TalonFX objIntake = new TalonFX(MotorIDs.iIntake, "MechCAN");
+  private TalonFX objPivot = new TalonFX(MotorIDs.iIntakePivot, "MechCAN");
   private StatusCode objTalonFXStatusCode;
-  private StatusSignal objStatusSignal;
-  
-  /** Creates a new Intake. */
-  public Intake() {
 
+  private Encoder objAbsEncoder;
+  private double dOffset = 0.0;
+
+  /** Creates a new Pivot. */
+  public Pivot() {
     TalonFXConfiguration objTalonFXConfig = new TalonFXConfiguration();
     objTalonFXConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 100.0;
@@ -32,23 +38,35 @@ public class Intake extends SubsystemBase {
     objTalonFXStatusCode = StatusCode.StatusCodeNotInitialized;
 
     for (int i = 1; i < 5; i++) {
-      objTalonFXStatusCode = objIntake.getConfigurator().apply(objTalonFXConfig);
+      objTalonFXStatusCode = objPivot.getConfigurator().apply(objTalonFXConfig);
       if (objTalonFXStatusCode.isOK()) break;
     }
-
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Tilt Angle", absPosition());
     // This method will be called once per scheduler run
   }
 
-   public void stopIntake(){
-    objIntake.stopMotor();
+
+  public double absPosition(){
+    return (objAbsEncoder.get() * 360 - dOffset);
   }
 
-  public void runIntake(double dSpeed){
-    objIntake.set(dSpeed);
+  public void runTilter(double dSpeed){
+    if (absPosition() <= MotorPositions.dPivotMin ) {
+      stopTilter();
+    }
+    else{
+      if (absPosition() >= MotorPositions.dPivotMax) {
+        stopTilter();
+      }
+      else objPivot.set(dSpeed);
+    }
   }
 
+  public void stopTilter(){
+    objPivot.stopMotor();
+  }
 }

@@ -20,8 +20,8 @@ import frc.robot.Constants.MotorIDs;
 
 public class Feeder extends SubsystemBase {
 
-  private TalonFX objFeeder = new TalonFX(MotorIDs.iFeederLeader);
-  private TalonFX objFollowFeeder = new TalonFX(MotorIDs. iFeederFollower);
+  private TalonFX objFeeder = new TalonFX(MotorIDs.iFeederLeader, "MechCAN");
+  private TalonFX objFollowFeeder = new TalonFX(MotorIDs. iFeederFollower, "MechCAN");
   private StatusCode objFeederStatusCode;
   private StatusSignal objStatusSignal;
   private int iCount = 0;

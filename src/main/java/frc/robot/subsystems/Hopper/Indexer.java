@@ -19,13 +19,13 @@ import frc.robot.Constants;
 
 public class Indexer extends SubsystemBase {
 
-  private TalonFX objIndexerLeader = new TalonFX(MotorIDs.iIndexerLeader);
-  private TalonFX objIndexerFollower = new TalonFX(MotorIDs. iIndexerFollower);
+  private TalonFX objIndexerLeader = new TalonFX(MotorIDs.iIndexerLeader, "MechCAN");
+  private TalonFX objIndexerFollower = new TalonFX(MotorIDs. iIndexerFollower, "MechCAN");
   private StatusCode objTalonFXStatusCode;
   /** Creates a new Hopper. */
   public Indexer() {
     TalonFXConfiguration objTalonFXConfig = new TalonFXConfiguration();
-    objTalonFXConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    objTalonFXConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     //objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 100.0;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     objTalonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
