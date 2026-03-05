@@ -62,10 +62,4 @@ public class PhotonShooter extends Command {
   public boolean isFinished() {
     return false;
   }
-
-
-  public double limitDouble (double dMinVal, double dValue, double dMaxVal) {
-    double dLimit = Math.max(dValue, dMinVal);
-    return Math.min(dLimit, dMaxVal);
-  }
 }

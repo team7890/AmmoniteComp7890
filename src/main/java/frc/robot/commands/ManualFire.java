@@ -24,7 +24,6 @@ public class ManualFire extends SequentialCommandGroup {
         new RunCommand(() -> objShooter.runShooterRPM(dShootRPM), objShooter),
         new RunCommand(() -> objFeeder.runFeeder(dFeedSpeed), objFeeder)
       )
-      //test
     );
   }
 }

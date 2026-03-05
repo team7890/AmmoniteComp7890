@@ -26,8 +26,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorIDs;
 
 public class Shooter extends SubsystemBase {
-  private TalonFX objShooter = new TalonFX(MotorIDs.iShooterLeader);
-  private TalonFX objFollowShooter = new TalonFX(MotorIDs.iShooterFollower);
+  private TalonFX objShooter = new TalonFX(MotorIDs.iShooterLeader, "MechCAN");
+  private TalonFX objFollowShooter = new TalonFX(MotorIDs.iShooterFollower, "MechCAN");
 
   private double dControl, dError;
 
@@ -40,6 +40,7 @@ public class Shooter extends SubsystemBase {
   StatusSignal objStatSig;
 
   private double distTest;
+  private double dTempRPM;
   
   /** Creates a new Shooter. */
   public Shooter() {
@@ -66,9 +67,9 @@ public class Shooter extends SubsystemBase {
     objFollowShooter.setControl(new Follower(objShooter.getDeviceID(), MotorAlignmentValue.Opposed));
 
     // === TREE MAP CONFIG === \\
-    objTreeMap.put(1.0, 2500.0);
-    objTreeMap.put(2.0, 3000.0);
-    objTreeMap.put(3.0, 4000.0);
+    objTreeMap.put(2.0, 3250.0);
+    objTreeMap.put(3.0, 3450.0);
+    objTreeMap.put(4.0, 3850.0);
 
   }
 
@@ -78,6 +79,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Shooter Speed RPM", getSpeedRPM());
     distTest = SmartDashboard.getNumber("distance test", 1.0);
     SmartDashboard.putNumber("RPM Interp result", getDistance2RPM(distTest));
+    dTempRPM = SmartDashboard.getNumber("Test RPM", 3500.0);
+    SmartDashboard.putNumber("Test RPM", dTempRPM);
   }
 
   public BooleanSupplier bsShooterFast(){
@@ -98,6 +101,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void runShooterRPM(double dTargetRPM){
+    dTargetRPM = dTempRPM;
     dControl = dTargetRPM / 5000.0;
     dError = dTargetRPM - getSpeedRPM();
     dControl = dControl + dError * 0.04 / 200.0;
