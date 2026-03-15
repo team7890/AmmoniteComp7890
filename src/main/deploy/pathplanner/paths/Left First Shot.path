@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.73773333333788,
+        "y": 4.541711111115974
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.889966666666666,
+        "y": 6.2080111111111105
+      },
+      "isLocked": false,
+      "linkedName": "Left Mid 1"
+    },
+    {
+      "anchor": {
+        "x": 4.265033333333333,
+        "y": 7.455299999999999
+      },
+      "prevControl": {
+        "x": 6.087244444444444,
+        "y": 7.620955555555555
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Left 1st shots"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Shooter Run",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.5,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "CHAOS (Left looking from DS)",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 72.2161115573074
+  },
+  "useDefaultConstraints": true
+}

@@ -1,0 +1,83 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.761669044222538,
+        "y": 3.4074750356633388
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.162276027580285,
+        "y": 2.2985913440087193
+      },
+      "isLocked": false,
+      "linkedName": "Middle 1"
+    },
+    {
+      "anchor": {
+        "x": 6.584211111111111,
+        "y": 0.8095888888888885
+      },
+      "prevControl": {
+        "x": 6.782414493034138,
+        "y": 1.042773872883434
+      },
+      "nextControl": {
+        "x": 6.195650484065745,
+        "y": 0.3524498495879766
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.147143133371088,
+        "y": 0.5113126994009383
+      },
+      "prevControl": {
+        "x": 4.858499144719715,
+        "y": 0.6126475876239296
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "First shots"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Shoot Slower",
+      "waypointRelativePos": 2.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Shoot Slower",
+      "waypointRelativePos": 2.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 54.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.5,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "reversed": false,
+  "folder": "CHAOS (Right looking from DS)",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -75.06858282186244
+  },
+  "useDefaultConstraints": false
+}

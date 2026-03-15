@@ -22,6 +22,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MotorIDs;
 
@@ -47,10 +48,10 @@ public class Shooter extends SubsystemBase {
 
     TalonFXConfiguration objTalonFXConfig = new TalonFXConfiguration();
     objTalonFXConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 100.0;
+    objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 60.0;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     objTalonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    objTalonFXConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.5;
+    objTalonFXConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.1;
     objTalonFXStatusCode = StatusCode.StatusCodeNotInitialized;
 
     for (int i = 1; i < 5; i++) {
@@ -67,9 +68,25 @@ public class Shooter extends SubsystemBase {
     objFollowShooter.setControl(new Follower(objShooter.getDeviceID(), MotorAlignmentValue.Opposed));
 
     // === TREE MAP CONFIG === \\
-    objTreeMap.put(2.0, 3250.0);
-    objTreeMap.put(3.0, 3450.0);
-    objTreeMap.put(4.0, 3850.0);
+     // TODO: FIX VALUES
+     // These keys are in meters not feet
+
+    //objTreeMap.put(1.0, 3250.0);
+    objTreeMap.put(30.0, 0.0);
+
+    // These are for more points later
+    // objTreeMap.put(42.0,3350.0);
+    // objTreeMap.put(45.0,3600.0);
+    // objTreeMap.put(47.0,3660.0);
+    
+    objTreeMap.put(40.0, 3200.0);
+    objTreeMap.put(42.0,3350.0);
+
+    //Same here
+//     objTreeMap.put(55.0,3600.0);
+//     objTreeMap.put(,3660.0);
+
+    objTreeMap.put(50.0, 3600.0);
 
   }
 
@@ -101,10 +118,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public void runShooterRPM(double dTargetRPM){
-    dTargetRPM = dTempRPM;
+    // dTargetRPM = dTempRPM;
     dControl = dTargetRPM / 5000.0;
     dError = dTargetRPM - getSpeedRPM();
-    dControl = dControl + dError * 0.04 / 200.0;
+    dControl = dControl + dError * 0.2 / 200.0; // was 0.04
     objShooter.set(dControl);
   }
 
@@ -115,5 +132,9 @@ public class Shooter extends SubsystemBase {
   public double getSpeedRPM() {
     objStatSig = objShooter.getVelocity();
     return objStatSig.getValueAsDouble() * 60.0;  
+  }
+
+  public Command shooterRunning(double dSpeed){
+    return run(() -> objShooter.set(dSpeed));
   }
 }

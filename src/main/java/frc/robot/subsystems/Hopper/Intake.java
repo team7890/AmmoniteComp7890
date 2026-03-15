@@ -19,6 +19,7 @@ public class Intake extends SubsystemBase {
   private TalonFX objIntake = new TalonFX(MotorIDs.iIntake, "MechCAN");
   private StatusCode objTalonFXStatusCode;
   private StatusSignal objStatusSignal;
+
   
   /** Creates a new Intake. */
   public Intake() {
@@ -27,7 +28,7 @@ public class Intake extends SubsystemBase {
     objTalonFXConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 100.0;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-    objTalonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    objTalonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
     objTalonFXConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.15;
     objTalonFXStatusCode = StatusCode.StatusCodeNotInitialized;
 
@@ -50,5 +51,7 @@ public class Intake extends SubsystemBase {
   public void runIntake(double dSpeed){
     objIntake.set(dSpeed);
   }
+
+
 
 }

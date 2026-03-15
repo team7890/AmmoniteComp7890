@@ -9,21 +9,15 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-// import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Photon;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-import frc.robot.Photon2;
-import frc.robot.generated.TunerConstants;
-import static edu.wpi.first.units.Units.*;
-
-
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Photon_Lock extends Command {
+public class PhoNewRot extends Command {
 
   private final CommandSwerveDrivetrain objSwerve;
-  private final Photon2 objPhoton;
   private final double dMaxSpeed;
   private final double dMaxAngularRate;
   private final DoubleSupplier dsDriverLeftX;
@@ -31,46 +25,40 @@ public class Photon_Lock extends Command {
  
   private double dCmdLeftX, dCmdLeftY;
 
-  // private double dMaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-  // // private double MaxSpeed = 1.0 * TunerConstants_beta.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-  // private double dMaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-
-
-  // =======  copied to Photon subsystem
-  // double photonAimProportional(){
-  //   double kp = 0.01;
-  //   double dragonRotVel;
+  double photonAimProportional(){
+    double kp = 0.01;
+    double dragonRotVel;
     
-  //   if (Photon.PhotonYaw() > 7888.0) {
-  //     dragonRotVel = 0.0;
-  //   }
-  //   else {
-  //     dragonRotVel = Photon.PhotonYaw() * kp;
-  //   }
+    if (Photon.PhotonYaw() == 7890.0) {
+      dragonRotVel = 0.0;
+    }
+    else {
+      // dragonRotVel = Photon.phoYawTest() * kp;
+      dragonRotVel = 12.0;
+    }
 
-  //   dragonRotVel *= dMaxAngularRate;
+    dragonRotVel *=dMaxAngularRate;
 
-  //   dragonRotVel *= -1.0;
+    dragonRotVel *= -1.0;
 
-  //   return dragonRotVel;
-  // }
+    return dragonRotVel;
+  }
 
   private SwerveRequest.FieldCentric drive  = new SwerveRequest.FieldCentric()
   .withDeadband(0.02).withRotationalDeadband(0.02) // Add a 2% deadband 10% is CTRE Value
   .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors;
+ 
+  /** Creates a new PhoNewRot. */
+  public PhoNewRot(CommandSwerveDrivetrain objSwerve_in, double dMaxSpeed_in, double dMaxAngularRate_in, DoubleSupplier dsDriverLeftX_in, DoubleSupplier dsDriverLeftY_in) {
   
-  /** Creates a new Photon_Lock. */
-  public Photon_Lock(CommandSwerveDrivetrain objSwerve_in, Photon2 objPhoton_in, double dMaxSpeed_in, double dMaxAngularRate_in, DoubleSupplier dsDriverLeftY_in, DoubleSupplier dsDriverLeftX_in) {
-    
     objSwerve = objSwerve_in;
-    objPhoton = objPhoton_in;
     dMaxSpeed = dMaxSpeed_in;
     dMaxAngularRate = dMaxAngularRate_in;
     dsDriverLeftX = dsDriverLeftX_in;
     dsDriverLeftY = dsDriverLeftY_in;
     
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(objSwerve, objPhoton);
+    addRequirements(objSwerve);
   }
 
   // Called when the command is initially scheduled.
@@ -80,15 +68,14 @@ public class Photon_Lock extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
     dCmdLeftX = dsDriverLeftX.getAsDouble();
     dCmdLeftY = dsDriverLeftY.getAsDouble();
 
-    objSwerve.setControl(
-      drive.withVelocityY(-dCmdLeftX).withVelocityX(-dCmdLeftY).withRotationalRate(objPhoton.photonAimProportional() * dMaxAngularRate)
-    );
+    SmartDashboard.putNumber("Photon Aim", photonAimProportional());
 
-     /// Testing Range calls /// 
+    objSwerve.setControl(
+      drive.withVelocityX(dCmdLeftY).withVelocityY(dCmdLeftX).withRotationalRate(photonAimProportional())
+    );
   }
 
   // Called once the command ends or is interrupted.

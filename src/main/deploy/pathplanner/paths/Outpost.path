@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.448888888888889,
-        "y": 6.0
+        "x": 4.147143133371088,
+        "y": 0.5113126994009383
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.44888888888889,
-        "y": 6.0
+        "x": 2.8807524360746957,
+        "y": 0.5868068958301811
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "First shots"
     },
     {
       "anchor": {
-        "x": 3.3003333333333336,
-        "y": 6.0
+        "x": 0.6206111111111112,
+        "y": 0.6244444444444435
       },
       "prevControl": {
-        "x": 2.3003333333333336,
-        "y": 6.0
+        "x": 1.5351313391837322,
+        "y": 0.6467636500705318
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Outpost"
     }
   ],
   "rotationTargets": [],
@@ -33,22 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
-    "nominalVoltage": 12.0,
+    "nominalVoltage": 12.5,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -135.0000000000001
   },
   "reversed": false,
-  "folder": null,
+  "folder": "CHAOS (Right looking from DS)",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

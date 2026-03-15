@@ -26,10 +26,10 @@ public class Indexer extends SubsystemBase {
   public Indexer() {
     TalonFXConfiguration objTalonFXConfig = new TalonFXConfiguration();
     objTalonFXConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    //objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 100.0;
+    objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 30.0;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     objTalonFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    objTalonFXConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.15;
+    objTalonFXConfig.OpenLoopRamps.VoltageOpenLoopRampPeriod = 0.1;
     objTalonFXStatusCode = StatusCode.StatusCodeNotInitialized;
 
     for (int i = 1; i < 5; i++) {

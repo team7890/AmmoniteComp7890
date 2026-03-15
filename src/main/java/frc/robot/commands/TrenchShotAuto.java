@@ -4,32 +4,34 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.MotorSpeeds;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Shooter.Feeder;
 import frc.robot.subsystems.Hopper.Indexer;
-import frc.robot.subsystems.Shooter.Shooter;
 import frc.robot.subsystems.Hopper.Intake;
-import frc.robot.Constants.MotorSpeeds;
+import frc.robot.subsystems.Hopper.Pivot;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FireNTheHole extends SequentialCommandGroup {
-  /** Creates a new FireNTheHole. */
-  public FireNTheHole(Feeder objFeeder, Indexer objIndexer, Intake objIntake) {
+public class TrenchShotAuto extends SequentialCommandGroup {
+  /** Creates a new ShooterFull. */
+  public TrenchShotAuto (Shooter objShooter, double dShooter3M, Feeder objFeeder, Indexer objIndexer, Intake objIntake, Pivot objPivot) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      
-     new ParallelCommandGroup(
-        new RunCommand(()-> objFeeder. runFeeder(MotorSpeeds.dFeederSpeed), objFeeder),
-       new RunCommand(()-> objIndexer. runIndexer(MotorSpeeds.dIndexerSpeed), objIndexer)
-      
-        )
-      );
-
+      new RunCommand(() -> objShooter.runShooterRPM(dShooter3M), objShooter).withTimeout(0.25),
+      new ParallelRaceGroup(
+        new RunCommand(() -> objShooter.runShooterRPM(dShooter3M), objShooter),
+        new Feed(objFeeder, objIndexer, objIntake).withTimeout(1.0)
+        
+      )
+    );
   }
 }

@@ -17,16 +17,16 @@ import frc.robot.Constants.MotorSpeeds;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class FireNTheHole extends SequentialCommandGroup {
+public class Feed extends SequentialCommandGroup {
   /** Creates a new FireNTheHole. */
-  public FireNTheHole(Feeder objFeeder, Indexer objIndexer, Intake objIntake) {
+  public Feed(Feeder objFeeder, Indexer objIndexer, Intake objIntake) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       
      new ParallelCommandGroup(
         new RunCommand(()-> objFeeder. runFeeder(MotorSpeeds.dFeederSpeed), objFeeder),
-       new RunCommand(()-> objIndexer. runIndexer(MotorSpeeds.dIndexerSpeed), objIndexer)
+        new RunCommand(()-> objIndexer. runIndexer(MotorSpeeds.dIndexerSpeed), objIndexer)
       
         )
       );

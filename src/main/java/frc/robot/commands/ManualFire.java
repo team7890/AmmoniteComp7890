@@ -9,20 +9,25 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Shooter.Feeder;
 import frc.robot.subsystems.Shooter.Shooter;
+import frc.robot.subsystems.Hopper.Indexer;
+import frc.robot.subsystems.Hopper.Intake;
+
+
+///EDITED FOR FIXED DISTANCE///
+
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ManualFire extends SequentialCommandGroup {
   /** Creates a new ManualFire. */
-  public ManualFire(Feeder objFeeder, Shooter objShooter, double dShootRPM, double dFeedSpeed) {
+  public ManualFire(Feeder objFeeder, Shooter objShooter, double dShootRPM, double dFeedSpeed, Intake objIntake, Indexer objIndexer) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new RunCommand(() -> objShooter.runShooterRPM(dShootRPM), objShooter).withTimeout(0.5),
+      new RunCommand(() -> objShooter.runShooterRPM(3500.0), objShooter).withTimeout(0.5),
       new ParallelCommandGroup(
-        new RunCommand(() -> objShooter.runShooterRPM(dShootRPM), objShooter),
-        new RunCommand(() -> objFeeder.runFeeder(dFeedSpeed), objFeeder)
+        new FireNTheHole(objFeeder, objIndexer, objIntake)
       )
     );
   }

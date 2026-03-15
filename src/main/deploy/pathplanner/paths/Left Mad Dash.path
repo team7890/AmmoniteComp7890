@@ -1,0 +1,67 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.2352467099345015,
+        "y": 7.455024882511783
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.970311111111112,
+        "y": 7.562488888888888
+      },
+      "isLocked": false,
+      "linkedName": "Left 2nd shots"
+    },
+    {
+      "anchor": {
+        "x": 8.133577777777777,
+        "y": 3.7426666666666666
+      },
+      "prevControl": {
+        "x": 8.308977777777779,
+        "y": 7.075266666666667
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake Pivot",
+      "waypointRelativePos": 0.20347394540942987,
+      "endWaypointRelativePos": 0.4019851116625292,
+      "command": null
+    },
+    {
+      "name": "Run Intake",
+      "waypointRelativePos": 0.3007444168734471,
+      "endWaypointRelativePos": 1.0,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 5.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.5,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 92.4195092166564
+  },
+  "reversed": false,
+  "folder": "CHAOS (Left looking from DS)",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 93.44404133988463
+  },
+  "useDefaultConstraints": true
+}

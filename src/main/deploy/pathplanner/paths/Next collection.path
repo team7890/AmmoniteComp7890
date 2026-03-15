@@ -1,0 +1,88 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.147143133371088,
+        "y": 0.5113126994009383
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.582738139849901,
+        "y": 0.5242941256935544
+      },
+      "isLocked": false,
+      "linkedName": "First shots"
+    },
+    {
+      "anchor": {
+        "x": 5.970311111111112,
+        "y": 0.7121444444444445
+      },
+      "prevControl": {
+        "x": 5.863404702203177,
+        "y": 0.2667010739947107
+      },
+      "nextControl": {
+        "x": 6.087244444444444,
+        "y": 1.1993666666666662
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.019033333333335,
+        "y": 3.5575222222222216
+      },
+      "prevControl": {
+        "x": 6.0385222222222215,
+        "y": 1.5111888888888876
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Middle 2"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake Pivot",
+      "waypointRelativePos": 0.20446650124069327,
+      "endWaypointRelativePos": 0.8039702233250552,
+      "command": null
+    },
+    {
+      "name": "Run Intake",
+      "waypointRelativePos": 0.4699527346387576,
+      "endWaypointRelativePos": 2.0,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Run Intake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.5,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -75.5792268730218
+  },
+  "reversed": false,
+  "folder": "CHAOS (Right looking from DS)",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": false
+}
