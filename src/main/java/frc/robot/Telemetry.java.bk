@@ -1,8 +1,14 @@
 package frc.robot;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
+import com.ctre.phoenix6.swerve.SwerveModule;
 
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -22,6 +28,9 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 
 public class Telemetry {
     private final double MaxSpeed;
+    private final SwerveDrivePoseEstimator m_poseEstimator;
+    private final Pigeon2 gyro;
+
 
     /**
      * Construct a telemetry object, with the specified max speed of the robot
@@ -29,6 +38,7 @@ public class Telemetry {
      * @param maxSpeed Maximum speed in meters per second
      */
     public Telemetry(double maxSpeed) {
+        gyro = new Pigeon2(0, "Swerve CANivore");
         MaxSpeed = maxSpeed;
         SignalLogger.start();
 
@@ -36,6 +46,16 @@ public class Telemetry {
         for (int i = 0; i < 4; ++i) {
             SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
         }
+
+        m_poseEstimator = new SwerveDrivePoseEstimator(
+                Constants.Swerve.swerveKinematics,
+                getGyroYaw(),
+                getModulePositions(),
+                new Pose2d(),
+                VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+                VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
+        );   
+
     }
 
     /* What to publish over networktables for telemetry */
@@ -84,6 +104,24 @@ public class Telemetry {
 
     private final double[] m_poseArray = new double[3];
 
+    public Pose2d getPose() {
+        return m_poseEstimator.getEstimatedPosition();
+    }
+
+    public void setPose(Pose2d pose) {
+        m_poseEstimator.resetPosition(getGyroYaw(), getModulePositions(), pose);
+    }
+
+
+    public SwerveModulePosition[] getModulePositions() {
+        SwerveModulePosition[] positions = new SwerveModulePosition[4];
+        for (SwerveModule mod : mSwerveMods) {
+            positions[mod.moduleNumber] = mod.getPosition();
+        }
+        return positions;
+    }
+
+
     /** Accept the swerve drive state and telemeterize it to SmartDashboard and SignalLogger. */
     public void telemeterize(SwerveDriveState state) {
         /* Telemeterize the swerve drive state */
@@ -118,4 +156,5 @@ public class Telemetry {
             m_moduleSpeeds[i].setLength(state.ModuleStates[i].speedMetersPerSecond / (2 * MaxSpeed));
         }
     }
+
 }

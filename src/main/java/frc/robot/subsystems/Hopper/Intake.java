@@ -5,25 +5,23 @@
 package frc.robot.subsystems.Hopper;
 
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.MotorIDs;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
 
-  private TalonFX objIntake = new TalonFX(MotorIDs.iIntake, "MechCAN");
+  private TalonFX objIntake; // = new TalonFX(MotorIDs.iIntake, "MechCAN");
   private StatusCode objTalonFXStatusCode;
-  private StatusSignal objStatusSignal;
 
   
   /** Creates a new Intake. */
   public Intake() {
-
+    objIntake = new TalonFX(Constants.MotorIDs.iIntake, Constants.mechCanBus);
     TalonFXConfiguration objTalonFXConfig = new TalonFXConfiguration();
     objTalonFXConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 100.0;

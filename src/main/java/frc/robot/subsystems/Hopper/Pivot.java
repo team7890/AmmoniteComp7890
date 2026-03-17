@@ -4,37 +4,29 @@
 
 package frc.robot.subsystems.Hopper;
 
-import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.MotorIDs;
-import frc.robot.Constants.MotorPositions;
-import frc.robot.Constants.MotorSpeeds;
+import frc.robot.Constants;
 
 public class Pivot extends SubsystemBase {
 
-  private TalonFX objPivot = new TalonFX(MotorIDs.iIntakePivot, "MechCAN");
-  private CANcoder objIntakeEncoder = new CANcoder(MotorIDs.iEncoderPivotID, "MechCAN");
+  private final TalonFX objPivot; // = new TalonFX(MotorIDs.iIntakePivot, "MechCAN");
+  private final CANcoder objIntakeEncoder; // = new CANcoder(MotorIDs.iEncoderPivotID, "MechCAN");
   private StatusCode objTalonFXStatusCode;
   private double dReportedPos;
 
-  // private CANcoder objAbsEncoder;
-  private double dOffset = 0.0;
-
   /** Creates a new Pivot. */
   public Pivot() {
+    objPivot = new TalonFX(Constants.MotorIDs.iIntakePivot, Constants.mechCanBus);
+    objIntakeEncoder = new CANcoder(Constants.MotorIDs.iEncoderPivotID, Constants.mechCanBus);
+
     TalonFXConfiguration objTalonFXConfig = new TalonFXConfiguration();
     objTalonFXConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 30.0;

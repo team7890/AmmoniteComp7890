@@ -5,7 +5,6 @@
 package frc.robot.subsystems.Hopper;
 
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -14,16 +13,17 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.MotorIDs;
 import frc.robot.Constants;
 
 public class Indexer extends SubsystemBase {
 
-  private TalonFX objIndexerLeader = new TalonFX(MotorIDs.iIndexerLeader, "MechCAN");
-  private TalonFX objIndexerFollower = new TalonFX(MotorIDs. iIndexerFollower, "MechCAN");
+  private TalonFX objIndexerLeader; // = new TalonFX(MotorIDs.iIndexerLeader, "MechCAN");
+  private TalonFX objIndexerFollower; // = new TalonFX(MotorIDs. iIndexerFollower, "MechCAN");
   private StatusCode objTalonFXStatusCode;
+
   /** Creates a new Hopper. */
   public Indexer() {
+    objIndexerLeader = new TalonFX(Constants.MotorIDs.iIndexerLeader, Constants.mechCanBus);
     TalonFXConfiguration objTalonFXConfig = new TalonFXConfiguration();
     objTalonFXConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     objTalonFXConfig.CurrentLimits.SupplyCurrentLimit = 30.0;
